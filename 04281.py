@@ -17,3 +17,4 @@ for tit in html_class:
 print('------------')
 first_found=soup.find(class_='td-subject')
 print(first_found.text)
+print("a")
