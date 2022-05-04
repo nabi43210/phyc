@@ -1,5 +1,6 @@
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
+import os.path
 
 f=open('4c.txt',"w+")
 
@@ -17,54 +18,43 @@ html=urlopen(url).read()
 soup=BeautifulSoup(html,'html.parser')
 html_class=soup.find_all(class_='td-subject')
 htmls=soup.find_all('tr',{'class':'notice'})
+
 aa=len(htmls)
-print(aa)
-print(htmls[1])
-
-
-
-
-
-
-print('---*--*--*--*--*-')
-
-print("html_class num: ",len(html_class))
 
 del html_class[0:aa]
 elelist=[]
 cnt=0
 for tit in html_class:
-    
-    #tit==html_class[0]
-    #tit==html_class[1]
-    #tit==html_class[2]
-    
     element_t = str(tit.find("strong"))
     indexe=element_t.index('/')
-    ni=indexe-39
-    #element_t는 공지문자!
-    
+    ni=indexe-39    
     element_t = element_t[22:ni]+"\n"
-
-
     elelist.append(element_t)    
     f.write(str(element_t))
     cnt=cnt+1
-print('------------')
+#print("element_t:",element_t)
+#print("elelist: ",elelist)
 
 
-#비교시작
+if (not os.path.isfile('5c.txt')):
+    print("no file")
+    f2 = open('5c.txt', 'w', encoding="UTF-8")
+    f2.close()
 
 f2=open('5c.txt',"r", encoding='UTF-8')
 firsts=f2.readline()
-print(firsts)
+print("5c.txt head:", firsts)
+print("examin:", elelist[0])
 
-print(elelist[0])
 
 if(firsts!=elelist[0]):
-    print("공지 업데이트됨")
+    f2=open('5c.txt','w',encoding='UTF-8')
+    print("공지 업데이트됨: ")
+    f2.write(elelist[0])
 else:
     print("업데이트되지 않음")
 
-f.close
-f2.close
+
+
+f.close()
+f2.close()
