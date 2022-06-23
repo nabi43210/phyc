@@ -58,7 +58,7 @@ def update():
     else:
         print("업데이트되지 않음")
 
-schedule.every(3).seconds.do(update)
+schedule.every(5).minutes.do(update)
 while True:
     schedule.run_pending()
     time.sleep(1)
