@@ -36,10 +36,8 @@ def update():
         elelist.append(element_t)
         f.write(str(element_t))
         cnt=cnt+1
-    f.close()
+        ele=elelist[0].strip("\n"".")
 
-    f=open('4c.txt',"r",encoding='UTF-8')
-    ele=f.readline()
     if (not os.path.isfile('5c.txt')):
         print("no file")
         f2 = open('5c.txt', 'w+', encoding="UTF-8")
