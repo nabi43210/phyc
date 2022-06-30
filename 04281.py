@@ -1,22 +1,18 @@
+from signal import signal
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 from infi.systray import SysTrayIcon
-from win10toast import ToastNotifier
+from plyer import notification
+import plyer.platforms.win.notification
 import os.path
 import schedule
 import time
+import sys
+import pkg_resources
+import signal
 
-
-toaster=ToastNotifier() #알림창
-'''
-#실제 사용시
-newfile=input("새 텍스트파일: ")+".txt"
-f3=open(newfile,"w+")
-'''
-systray = SysTrayIcon("icon.ico", "Hansung Notice")
-systray.start()
-url="https://www.hansung.ac.kr/hansung/8385/subview.do?enc=Zm5jdDF8QEB8JTJGYmJzJTJGaGFuc3VuZyUyRjE0MyUyRmFydGNsTGlzdC5kbyUzRmJic0NsU2VxJTNEMjg2JTI2YmJzT3BlbldyZFNlcSUzRCUyNmlzVmlld01pbmUlM0RmYWxzZSUyNnNyY2hDb2x1bW4lM0RzaiUyNnNyY2hXcmQlM0QlMjY%3D"
-
+def exit_program(systray):
+    os.kill(os.getpid(), signal.SIGTERM)
 
 def update():
     f=open('4c.txt',"w+",encoding='UTF-8')
@@ -52,15 +48,17 @@ def update():
         f2=open('5c.txt','w',encoding='UTF-8')
         print("공지 업데이트됨: ")
         f2.write(str(ele))
-        toaster.show_toast("한성공지","공지 업데이트됨")
+        notification.notify("Hansung Notice",str(ele))
         f2.close()
     else:
         print("업데이트되지 않음")
     f.close()
     
-
-schedule.every(1).seconds.do(update)
-
+job = schedule.every(5).minutes.do(update)
+systray = SysTrayIcon('', "Hansung Notice", on_quit=exit_program)
+systray.start()
+url="https://www.hansung.ac.kr/hansung/8385/subview.do?"
+update()
 while True:
     schedule.run_pending()
     time.sleep(1)

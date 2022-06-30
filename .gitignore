@@ -1,2 +1,5 @@
 4c.txt
 5c.txt
+*.spec
+build
+dist
